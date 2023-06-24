@@ -1,4 +1,5 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
 
 const todoSlide = createSlice({
   name: 'todo',
@@ -8,7 +9,11 @@ const todoSlide = createSlice({
     'Learn Zustand',
     'Learn Redux Toolkit',
   ],
-  reducers: {},
+  reducers: {
+    add: (state, action) => {
+      state.push(action.payload.newTodo);
+    },
+  },
 });
 
 export const store = configureStore({
@@ -16,3 +21,9 @@ export const store = configureStore({
     todo: todoSlide.reducer,
   },
 });
+
+export const { add } = todoSlide.actions;
+
+type RootState = ReturnType<typeof store.getState>;
+
+export const useSelectorApp: TypedUseSelectorHook<RootState> = useSelector;
