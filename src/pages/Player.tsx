@@ -1,6 +1,6 @@
 import { MessageCircle } from "lucide-react";
-
 import { useEffect } from "react";
+
 import { Header } from "../components/Header";
 import { Module } from "../components/Module";
 import { Video } from "../components/Video";
