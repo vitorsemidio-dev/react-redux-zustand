@@ -13,7 +13,12 @@ interface ModuleProps {
 }
 
 export function Module({ amountOfLessons, moduleIndex, title }: ModuleProps) {
-  const lessons = useAppSelector(state => state.player.course.modules[moduleIndex].lessons)
+  const lessons = useAppSelector(state => state.player.course.modules[moduleIndex].lessons);
+  const { currentLessonIndex, currentModuleIndex } = useAppSelector(state => {
+    const { currentLessonIndex, currentModuleIndex } = state.player
+    return { currentLessonIndex, currentModuleIndex }
+  });
+
   const dispatch = useDispatch();
 
   return (
@@ -37,6 +42,7 @@ export function Module({ amountOfLessons, moduleIndex, title }: ModuleProps) {
               duration={lesson.duration}
               title={lesson.title}
               onPlay={() => dispatch(play({ moduleIndex, lessonIndex }))}
+              isCurrent={currentLessonIndex === lessonIndex && currentModuleIndex === moduleIndex}
             />
           ))}
         </nav>

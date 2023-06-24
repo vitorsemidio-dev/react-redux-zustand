@@ -1,13 +1,24 @@
-interface HeaderProps {
-  title: string;
-  subtitle: string;
-}
+import { useAppSelector } from "../store";
 
-export function Header({ subtitle, title }: HeaderProps) {
+export function Header() {
+  const { currentLesson, currentModule } = useAppSelector((state) => {
+    const { currentLessonIndex, currentModuleIndex } = state.player;
+    const currentModule = state.player.course.modules[currentModuleIndex];
+    const currentLesson = currentModule.lessons[currentLessonIndex];
+    return {
+      currentLesson,
+      currentModule,
+    }
+  });
+
   return (
     <div className="flex flex-col gap-1">
-      <h1 className="text-2xl font-bold">{title}</h1>
-      <span className="zinc-400 text-sm">{subtitle}</span>
+      <h1 className="text-2xl font-bold">
+        {currentLesson.title}
+      </h1>
+      <span className="text-zinc-400 text-sm">
+        Módulo: {currentModule.title}
+      </span>
     </div>
   );
 }
