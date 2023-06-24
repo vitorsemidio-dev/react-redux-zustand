@@ -1,4 +1,4 @@
-import { ChevronDown, MessageCircle } from 'lucide-react';
+import { ChevronDown, MessageCircle, Video } from 'lucide-react';
 
 export function Player() {
   return (
@@ -30,6 +30,30 @@ export function Player() {
                 </div>
                 <ChevronDown className="ml-auto h-4 w-4 text-zinc-400" />
               </button>
+
+              <nav className="relative flex flex-col gap-4 p-6">
+                <button className="flex items-center gap-3 text-sm text-zinc-400">
+                  <Video className="h-4 w-4 text-zinc-500" />
+                  <span>Fundamentos dos Redux</span>
+                  <span className="ml-auto font-mono text-xs text-zinc-500">
+                    05:55
+                  </span>
+                </button>
+                <button className="flex items-center gap-3 text-sm text-zinc-400">
+                  <Video className="h-4 w-4 text-zinc-500" />
+                  <span>Fundamentos dos Redux</span>
+                  <span className="ml-auto font-mono text-xs text-zinc-500">
+                    05:55
+                  </span>
+                </button>
+                <button className="flex items-center gap-3 text-sm text-zinc-400">
+                  <Video className="h-4 w-4 text-zinc-500" />
+                  <span>Fundamentos dos Redux</span>
+                  <span className="ml-auto font-mono text-xs text-zinc-500">
+                    05:55
+                  </span>
+                </button>
+              </nav>
             </div>
           </aside>
         </main>
