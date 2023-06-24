@@ -3,9 +3,10 @@ import { MessageCircle } from "lucide-react";
 import { Header } from "../components/Header";
 import { Module } from "../components/Module";
 import { Video } from "../components/Video";
+import { useAppSelector } from "../store";
 
 export function Player() {
-  const modules = [1, 2, 3];
+  const modules = useAppSelector(state => state.player.course.modules)
 
   return (
     <div className="flex h-screen items-center justify-center bg-zinc-950 text-zinc-50">
@@ -24,12 +25,12 @@ export function Player() {
             <Video />
           </div>
           <aside className="absolute top-0 right-0 bottom-0 w-80 border-l border-zinc-800 bg-zinc-900 divide-y-4 divide-zinc-900 overflow-y-scroll scrollbar-thin scrollbar-track-zinc-950 scrollbar-thumb-zinc-800">
-            {modules.map((section, index) => (
+            {modules.map((module, index) => (
               <Module
-                key={section}
-                amountOfLessons={3}
+                key={module.id}
+                amountOfLessons={module.lessons.length}
                 moduleIndex={index}
-                title="Desvendando o Redux"
+                title={module.title}
               />
             ))}
           </aside>
