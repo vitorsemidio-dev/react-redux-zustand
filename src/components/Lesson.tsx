@@ -1,13 +1,15 @@
 import { Video } from "lucide-react";
 
 interface LessonProps {
-  title: string;
   duration: string;
+  title: string;
+  onPlay: () => void
 }
 
-export function Lesson({ title, duration }: LessonProps) {
+export function Lesson({ duration, title, onPlay }: LessonProps) {
+
   return (
-    <button className="flex items-center gap-3 text-sm text-zinc-400">
+    <button className="flex items-center gap-3 text-sm text-zinc-400" onClick={onPlay}>
       <Video className="h-4 w-4 text-zinc-500" />
       <span>
         {title}
