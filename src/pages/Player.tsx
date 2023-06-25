@@ -1,29 +1,25 @@
-import { MessageCircle } from "lucide-react";
-import { useEffect } from "react";
+import { MessageCircle } from 'lucide-react';
+import { useEffect } from 'react';
 
-import { useDispatch } from "react-redux";
-import { Header } from "../components/Header";
-import { Module } from "../components/Module";
-import { Video } from "../components/Video";
-import { api } from "../lib/axios";
-import { useAppSelector } from "../store";
-import { start, useCurrentLesson } from "../store/slices/player";
+import { Header } from '../components/Header';
+import { Module } from '../components/Module';
+import { Video } from '../components/Video';
+import { useAppDispatch, useAppSelector } from '../store';
+import { loadCourse, useCurrentLesson } from '../store/slices/player';
 
 export function Player() {
-  const dispatch = useDispatch();
-  const modules = useAppSelector(state => state.player.course?.modules);
+  const dispatch = useAppDispatch();
+  const modules = useAppSelector((state) => state.player.course?.modules);
   const { currentLesson } = useCurrentLesson();
 
   useEffect(() => {
     if (!currentLesson) return;
     document.title = `Assistindo: ${currentLesson.title}`;
-  }, [currentLesson])
+  }, [currentLesson]);
 
   useEffect(() => {
-    api.get('/courses/1').then(response => {
-      dispatch(start(response.data))
-    })
-  }, [])
+    dispatch(loadCourse());
+  }, []);
 
   return (
     <div className="flex h-screen items-center justify-center bg-zinc-950 text-zinc-50">
@@ -42,14 +38,15 @@ export function Player() {
             <Video />
           </div>
           <aside className="absolute top-0 right-0 bottom-0 w-80 border-l border-zinc-800 bg-zinc-900 divide-y-4 divide-zinc-900 overflow-y-scroll scrollbar-thin scrollbar-track-zinc-950 scrollbar-thumb-zinc-800">
-            {modules && modules.map((module, index) => (
-              <Module
-                key={module.id}
-                amountOfLessons={module.lessons.length}
-                moduleIndex={index}
-                title={module.title}
-              />
-            ))}
+            {modules &&
+              modules.map((module, index) => (
+                <Module
+                  key={module.id}
+                  amountOfLessons={module.lessons.length}
+                  moduleIndex={index}
+                  title={module.title}
+                />
+              ))}
           </aside>
         </main>
       </div>

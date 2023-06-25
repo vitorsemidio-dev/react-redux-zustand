@@ -1,6 +1,7 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { useAppSelector } from '..';
+import { api } from '../../lib/axios';
 
 interface Course {
   id: number;
@@ -19,13 +20,20 @@ export interface PlayerState {
   course: Course | null;
   currentModuleIndex: number;
   currentLessonIndex: number;
+  isLoading: boolean;
 }
 
 const INITIAL_STATE: PlayerState = {
   course: null,
   currentModuleIndex: 0,
   currentLessonIndex: 0,
-}
+  isLoading: false,
+};
+
+export const loadCourse = createAsyncThunk('player/load', async () => {
+  const response = await api.get('/courses/1');
+  return response.data;
+});
 
 export const playerSlice = createSlice({
   name: 'player',
@@ -33,7 +41,10 @@ export const playerSlice = createSlice({
   reducers: {
     next: (state) => {
       const nextLessonIndex = state.currentLessonIndex + 1;
-      const nextLesson = state.course?.modules[state.currentModuleIndex].lessons[nextLessonIndex];
+      const nextLesson =
+        state.course?.modules[state.currentModuleIndex].lessons[
+          nextLessonIndex
+        ];
 
       if (nextLesson) {
         state.currentLessonIndex = nextLessonIndex;
@@ -50,10 +61,22 @@ export const playerSlice = createSlice({
     start: (state, action: PayloadAction<Course>) => {
       state.course = action.payload;
     },
-    play: (state, action: PayloadAction<{ moduleIndex: number, lessonIndex: number }>) => {
+    play: (
+      state,
+      action: PayloadAction<{ moduleIndex: number; lessonIndex: number }>,
+    ) => {
       state.currentModuleIndex = action.payload.moduleIndex;
       state.currentLessonIndex = action.payload.lessonIndex;
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(loadCourse.fulfilled, (state, action) => {
+      state.course = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(loadCourse.pending, (state) => {
+      state.isLoading = true;
+    });
   },
 });
 
@@ -67,6 +90,6 @@ export const useCurrentLesson = () => {
     return {
       currentLesson,
       currentModule,
-    }
+    };
   });
-}
+};
