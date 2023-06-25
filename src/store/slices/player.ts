@@ -27,7 +27,7 @@ const INITIAL_STATE: PlayerState = {
   course: null,
   currentModuleIndex: 0,
   currentLessonIndex: 0,
-  isLoading: false,
+  isLoading: true,
 };
 
 export const loadCourse = createAsyncThunk('player/load', async () => {
@@ -58,9 +58,6 @@ export const playerSlice = createSlice({
         }
       }
     },
-    start: (state, action: PayloadAction<Course>) => {
-      state.course = action.payload;
-    },
     play: (
       state,
       action: PayloadAction<{ moduleIndex: number; lessonIndex: number }>,
@@ -81,7 +78,7 @@ export const playerSlice = createSlice({
 });
 
 export const player = playerSlice.reducer;
-export const { next, start, play } = playerSlice.actions;
+export const { next, play } = playerSlice.actions;
 export const useCurrentLesson = () => {
   return useAppSelector((state) => {
     const { currentLessonIndex, currentModuleIndex } = state.player;
