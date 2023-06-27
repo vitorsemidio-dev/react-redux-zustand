@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Header } from '../components/Header';
 import { Module } from '../components/Module';
 import { Video } from '../components/Video';
+import { fetchPlaylistVideos } from '../hooks/use-youtube';
 import { useCurrentLesson, useStore } from '../zustand-store';
 
 export function Player() {
@@ -20,7 +21,16 @@ export function Player() {
 
   useEffect(() => {
     load();
-  }, []);
+  }, [load]);
+
+  useEffect(() => {
+    const loadPlaylist = async () => {
+      const playlistUrl = 'https://www.youtube.com/playlist?list=PL4cUxeGkcC9iK6Qhn-QLcXCXPQUov1U7f'
+      const response = await fetchPlaylistVideos(playlistUrl)
+      console.log(response);
+    }
+    loadPlaylist()
+  }, [])
 
   return (
     <div className="flex h-screen items-center justify-center bg-zinc-950 text-zinc-50">
